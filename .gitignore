@@ -1,0 +1,35 @@
+# Python cache / venv
+__pycache__/
+*.py[cod]
+.venv/
+**/.venv/
+
+# Local runtime artifacts
+output/
+**/output/
+*.log
+
+# Local database and generated exports
+**/data/db/*.db
+**/data/output/**
+!**/data/output/.gitkeep
+
+# Media binaries
+*.mp4
+*.wav
+*.mp3
+
+# Secrets
+cookie.txt
+cookies.txt
+*.cookie
+.env
+.env.local
+
+# Personal documents
+飞书文档/
+~$*.docx
+
+# Local tool configs / generated folders
+.claude/
+*_scenes/
