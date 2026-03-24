@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+/* 
+  这一段是全站设计变量。
+  如果你后续要统一改主题色、底色、文字颜色，优先改这里。
+*/
+:root {
+  --surface-0: #07080c;
+  --surface-1: #0f1118;
+  --surface-2: #171a25;
+  --surface-3: #202436;
+  --ink-0: #f4f7ff;
+  --ink-1: #cbd2e6;
+  --ink-2: #97a0bc;
+  --line: rgba(255, 255, 255, 0.1);
+  --accent-pink: #ff72bf;
+  --accent-cyan: #35e7ff;
+  --accent-gold: #f8c96b;
+  --accent-lime: #8ee97d;
+}
+
+/* 
+  Tailwind v4 支持把 CSS 变量映射成可直接使用的工具类。
+  例如 text-accent-cyan、bg-surface-2 这种类名，底层就来自这里。
+*/
+@theme inline {
+  --color-background: var(--surface-0);
+  --color-foreground: var(--ink-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-ink-1: var(--ink-1);
+  --color-ink-2: var(--ink-2);
+  --color-line: var(--line);
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-gold: var(--accent-gold);
+  --color-accent-lime: var(--accent-lime);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* 页面最底层的背景色和文字色。 */
+html {
+  background: var(--surface-0);
+  color: var(--ink-0);
+  scroll-behavior: smooth;
+}
+
+/* 
+  body 的背景不是纯色，而是两层径向渐变 + 一层纵向渐变。
+  这样能让控制台首页看起来更像“工业化工作台”，不是普通后台。
+*/
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(53, 231, 255, 0.14), transparent 30%),
+    radial-gradient(circle at top right, rgba(255, 114, 191, 0.16), transparent 28%),
+    linear-gradient(180deg, #090a10 0%, #07080c 100%);
+  color: var(--ink-0);
+  font-family: var(--font-body), sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(53, 231, 255, 0.32);
+  color: white;
+}
+
+/* 
+  panel-surface 是一个复用频率很高的“面板外观类”。
+  几乎所有卡片、信息块、模板说明区都共用它。
+  后续如果你想统一改玻璃感、边框、阴影，改这里最省事。
+*/
+.panel-surface {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.025)),
+    rgba(12, 14, 20, 0.88);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(18px);
+}
+
+.page-grid {
+  position: relative;
+}
+
+/* 
+  这一层只是弱化的背景网格装饰，用于首页和模板实验区的大背景。
+  用户之前提到实际导出图里可以忽略网格，所以它只存在于控制台页面里。
+*/
+.page-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 96px 96px;
+  mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 85%);
+}
+
+.template-canvas {
+  container-type: inline-size;
+}
+
+/* 
+  模板预览画布内部的网格背景。
+  这里使用 cqw 单位，意思是“跟随容器宽度缩放”，
+  所以模板缩小时，所有视觉比例也会一起缩。
+*/
+.template-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 3.8cqw 3.8cqw;
+}
+
+.display-font {
+  font-family: var(--font-display), sans-serif;
+}
+
+/* 给数字、编号、价格矩阵这类信息单独用等宽字体，更像参数面板。 */
+.mono-font {
+  font-family: var(--font-mono), monospace;
+}
+
+/* 这两个描边类主要用于大标题，让字更像视频封面风格。 */
+.outline-dark {
+  -webkit-text-stroke: 0.34cqw #0c0d12;
+  paint-order: stroke fill;
+}
+
+.outline-light {
+  -webkit-text-stroke: 0.16cqw rgba(255, 255, 255, 0.9);
+  paint-order: stroke fill;
+}
