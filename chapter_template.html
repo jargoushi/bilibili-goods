@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>章节过渡与互动大板模板</title>
+    <style>
+        :root {
+            --bg-color-outer: #0A0A0E;
+            --bg-color-inner: #15151A;
+            --pink-light: #E6B3DB;
+            --neon-pink: #FF69B4;
+            --cyan-text: #4df8d4;
+            --pink-text: #ff66ed;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        #app {
+            width: 1920px;
+            height: 1080px;
+            flex-shrink: 0;
+            background: radial-gradient(circle at 50% 40%, var(--bg-color-inner) 0%, var(--bg-color-outer) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transform-origin: center center;
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1500px;
+        }
+
+        .avatar-wrap {
+            position: absolute;
+            left: -50px;
+            /* 使头像从粉色框左侧突破出来 */
+            top: 10%;
+            transform: translateY(-50%);
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            border: 8px solid #fff;
+            box-shadow: 0 0 0 12px var(--pink-light), 0 0 30px var(--neon-pink);
+            z-index: 10;
+            background: #fff;
+            padding: 10px;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .text-box {
+            background: var(--pink-light);
+            border-radius: 60px;
+            padding: 100px 100px 100px 300px;
+            /* huge left padding for avatar overlap */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-left: 150px;
+            min-width: 1000px;
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.4);
+            gap: 60px;
+        }
+
+        /* 巨大的多层阴影加外围描边文字特效 */
+        .stroke-text {
+            font-size: 160px;
+            font-weight: 900;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 10px;
+            white-space: nowrap;
+        }
+
+        .stroke-text::before {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            /* 伪元素通过极粗描边充当底部背景，避免内描边破坏字体 */
+            -webkit-text-stroke: 35px #000;
+            z-index: -1;
+            /* 制造错位厚重立体感阴影 */
+            text-shadow: 15px 15px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        .title-top {
+            color: var(--cyan-text);
+        }
+
+        .title-bottom {
+            color: var(--pink-text);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="avatar-wrap">
+                <img id="avatar-img" class="avatar" src="placeholder.jpg" alt="avatar">
+            </div>
+            <div class="text-box">
+                <div id="title-top" class="stroke-text title-top" data-text="1000元以内">1000元以内</div>
+                <div id="title-bottom" class="stroke-text title-bottom" data-text="升降桌推荐">升降桌推荐</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function fitScreen() {
+            const app = document.getElementById('app');
+            const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            app.style.transform = `scale(${scale})`;
+        }
+        window.addEventListener('resize', fitScreen);
+
+        window.templateData = {
+            avatar: "./对标视频_scenes/008.jpg",
+            titleTop: "1000元以内",
+            titleBottom: "升降桌推荐"
+        };
+
+        function renderTemplate(data) {
+            if (!data) return;
+            if (data.avatar) document.getElementById('avatar-img').src = data.avatar;
+            if (data.titleTop) {
+                const el = document.getElementById('title-top');
+                el.innerText = data.titleTop;
+                el.setAttribute('data-text', data.titleTop);
+            }
+            if (data.titleBottom) {
+                const el = document.getElementById('title-bottom');
+                el.innerText = data.titleBottom;
+                el.setAttribute('data-text', data.titleBottom);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fitScreen();
+            renderTemplate(window.templateData);
+        });
+    </script>
+</body>
+
+</html>
